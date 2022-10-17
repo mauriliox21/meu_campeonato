@@ -1,0 +1,14 @@
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\BLL.dll
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\BLL.pdb
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\DAL.dll
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\EntityFramework.dll
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\DAL.pdb
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\DAL.dll.config
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\EntityFramework.xml
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\obj\Debug\BLL.csproj.AssemblyReference.cache
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\obj\Debug\BLL.csproj.CoreCompileInputs.cache
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\obj\Debug\BLL.csproj.CopyComplete
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\obj\Debug\BLL.dll
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\obj\Debug\BLL.pdb
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\Biblioteca.dll
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\Biblioteca.pdb

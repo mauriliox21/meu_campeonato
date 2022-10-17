@@ -16,6 +16,10 @@ namespace DAL.Util
         {
             Contexto = AcessoDb.CapturarContextoDb();
         }
+        public ContextoDb(ContextoDb contextoDb)
+        {
+            Contexto = contextoDb.Contexto;
+        }
 
         public DbContextTransaction CriarTransacao()
         {
@@ -23,6 +27,18 @@ namespace DAL.Util
                 Transacao = Contexto.Database.BeginTransaction();
 
             return Transacao;
+        }
+
+        public void SetRollback()
+        {
+            if (Transacao != null)
+                Transacao.Rollback();
+        }
+
+        public void SetCommit()
+        {
+            if (Transacao != null)
+                Transacao.Commit();
         }
     }
 }

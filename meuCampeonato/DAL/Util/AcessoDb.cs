@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Biblioteca;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
@@ -39,38 +40,46 @@ namespace DAL.Util
             }
         }
 
-        public static SqlParameter FormatarParametro(SortedList fonteDados, string nome, bool alfanumerico)
+        public static SqlParameter FormatarParametro(SortedList fonteDados, string nome, bool permiteNulo)
         {
-            string valor = fonteDados[nome].ToString();
+            string valor = UtilSortedList.CapturarCampoString(fonteDados, nome);
             SqlParameter parametro;
-
-            if (alfanumerico)
-                parametro = new SqlParameter("@" + nome, SqlDbType.VarChar);
-            else
-                parametro = new SqlParameter(nome, SqlDbType.Int);
 
             if (string.IsNullOrEmpty(valor))
             {
-                if (alfanumerico)
-                    parametro.Value = "";
+                if (permiteNulo)
+                    parametro = new SqlParameter(nome, null);
                 else
-                    parametro.Value = null;
+                    parametro = new SqlParameter(nome, "");
             }
             else
             {
-                parametro.Value = valor;
+                parametro = new SqlParameter(nome, valor);
             }
-
-            parametro.Direction = ParameterDirection.InputOutput;
-            parametro.IsNullable = false;
 
             return parametro;
 
         }
 
-        public static DataTable ExecutarQuery(string sql, ContextoDb contexto, SqlCommand comando)
+        public static DataTable ExecutarQuery(ContextoDb contexto, SqlCommand comando)
         {
             DataTable tabela = new DataTable();
+
+            //Inclui os parametros na chamada da execução da procedure ex: STP_CAMPEONATO_INCLUIR @NM_CAMPEONATO
+            int index = 0;
+            foreach (SqlParameter parametro in comando.Parameters)
+            {
+                if (parametro.Value != null)
+                {
+                    comando.CommandText += $" @{parametro.ParameterName} = N'{parametro.Value}'";
+                }
+                else if (parametro.Value == null)
+                {
+                    comando.CommandText += $" @{parametro.ParameterName} = null";
+                }
+
+                index++;
+            }
 
             comando.Transaction = (SqlTransaction)contexto.CriarTransacao().UnderlyingTransaction;
 
