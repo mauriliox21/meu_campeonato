@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.SqlClient;
 
-namespace DAL.Util
+namespace Biblioteca
 {
     //Classe criada para abstração, para que as classes DAL não conhenção o mecanismo de conexão com o banco de dados
     public class ComandoDb
@@ -19,6 +12,9 @@ namespace DAL.Util
             Comando = new SqlCommand(sql, (SqlConnection)contexto.Contexto.Database.Connection);
         }
 
+        /// <summary>
+        /// Inclui um objeto SqlParameter na Collection Parameters da propriedade "Comando" desta instância classe
+        /// </summary>
         public void IncluirParametro(SqlParameter parametro)
         {
             Comando.Parameters.Add(parametro);

@@ -1,11 +1,18 @@
 ﻿using Biblioteca;
+using Biblioteca.Util;
 using System.Collections;
 using System.Data;
+using System.Runtime.Remoting.Contexts;
 
 namespace DAL
 {
     public class BaseDAL
     {
+        public ContextoDb ContextoAtual { get; }
+        public BaseDAL(ContextoDb contexto)
+        {
+            ContextoAtual = contexto;
+        }
         public SortedList FormatarResultado(DataTable retorno)
         {
             SortedList resultado = new SortedList();

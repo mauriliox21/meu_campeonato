@@ -1,6 +1,6 @@
 ﻿using Biblioteca;
+using Biblioteca.Util;
 using DAL;
-using DAL.Util;
 using System;
 using System.Collections;
 using System.Data;
@@ -23,7 +23,6 @@ namespace BLL
 
                 #region Verifica se o time existe para não ser incluido duplicado
                 SortedList resultadoConsultaTime = Consultar(parametros);
-
                 if (VerificarResultadoSucesso(resultadoConsultaTime))
                 {
                     DataTable retornoConsultaTime = UtilSortedList.CapturarDataTable(resultadoConsultaTime, "retorno");
@@ -43,8 +42,8 @@ namespace BLL
                 #region caso o time não exista na base cria o registro do time
                 if (sqTime == "" && !ocorreuErro)
                 {
-                    TimeDAL incluirDAL = new TimeDAL();
-                    resultado = incluirDAL.Incluir(ContextoAtual, parametros);
+                    TimeDAL incluirDAL = new TimeDAL(ContextoAtual);
+                    resultado = incluirDAL.Incluir(parametros);
 
                     if (VerificarResultadoSucesso(resultado))
                     {
@@ -84,7 +83,7 @@ namespace BLL
             }
             catch (Exception erro)
             {
-                resultado = FormatarResultadoErro(erro);
+                resultado = FormatarResultadoErroSistema(erro);
                 SetRollback();
             }
 
@@ -97,20 +96,13 @@ namespace BLL
 
             try
             {
-                TimeDAL consultarDAL = new TimeDAL();
-                resultado = consultarDAL.Consultar(ContextoAtual, parametros);
-
-                //caso não seja sucesso reverte a transação
-                if (VerificarResultadoSucesso(resultado))
-                    SetCommit();
-                else
-                    SetRollback();
+                TimeDAL consultarDAL = new TimeDAL(ContextoAtual);
+                resultado = consultarDAL.Consultar(parametros);
 
             }
             catch (Exception erro)
             {
-                resultado = FormatarResultadoErro(erro);
-                SetRollback();
+                resultado = FormatarResultadoErroSistema(erro);
             }
 
             return resultado;

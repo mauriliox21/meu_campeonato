@@ -1,31 +1,43 @@
-﻿using DAL.Util;
+﻿using Biblioteca;
 using System.Collections;
 
 namespace DAL
 {
     public class CampeonatoTimeDAL : BaseDAL
     {
-        public SortedList Incluir(ContextoDb contexto, SortedList parametros)
+        public CampeonatoTimeDAL(ContextoDb contexto) : base(contexto) { }
+
+        public SortedList Incluir(SortedList parametros)
         {
-            ComandoDb query = new ComandoDb("STP_CAMPEONATO_TIME_INCLUIR", contexto);
+            ComandoDb query = new ComandoDb("STP_CAMPEONATO_TIME_INCLUIR", ContextoAtual);
             query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "SQ_CAMPEONATO", true));
             query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "SQ_TIME", true));
 
-            SortedList resultado = FormatarResultado(AcessoDb.ExecutarQuery(contexto, query.Comando));
+            SortedList resultado = FormatarResultado(AcessoDb.ExecutarQueryManutencao(ContextoAtual, query.Comando));
             
             return resultado;
         }
 
-        public SortedList Consultar(ContextoDb contexto, SortedList parametros)
+        public SortedList Consultar(SortedList parametros)
         {
-            ComandoDb query = new ComandoDb("STP_CAMPEONATO_TIME_CONSULTAR", contexto);
+            ComandoDb query = new ComandoDb("STP_CAMPEONATO_TIME_CONSULTAR", new ContextoDb());
             query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "NM_CAMPEONATO", false));
 
-            SortedList resultado = FormatarResultado(AcessoDb.ExecutarQuery(contexto, query.Comando));
+            SortedList resultado = FormatarResultado(AcessoDb.ExecutarQuery(query.Comando));
 
             return resultado;
         }
 
+        public SortedList Alterar(SortedList parametros)
+        {
+            ComandoDb query = new ComandoDb("STP_CAMPEONATO_TIME_ALTERAR", ContextoAtual);
+            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "SQ_CAMPEONATO_TIME", true));
+            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "NR_PONTUACAO", true));
+            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "ST_ELIMINADO", false));
 
+            SortedList resultado = FormatarResultado(AcessoDb.ExecutarQueryManutencao(ContextoAtual, query.Comando));
+
+            return resultado;
+        }
     }
 }

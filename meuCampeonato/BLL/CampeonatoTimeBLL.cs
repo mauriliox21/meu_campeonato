@@ -1,7 +1,9 @@
-﻿using DAL;
-using DAL.Util;
+﻿using Biblioteca;
+using Biblioteca.Util;
+using DAL;
 using System;
 using System.Collections;
+using System.Data;
 
 namespace BLL
 {
@@ -16,19 +18,25 @@ namespace BLL
 
             try
             {
-                CampeonatoTimeDAL incluirDAL = new CampeonatoTimeDAL();
-                resultado = incluirDAL.Incluir(ContextoAtual, parametros);
+                if (!CampeonatoTemTodosTimes(parametros))
+                {
+                    CampeonatoTimeDAL incluirDAL = new CampeonatoTimeDAL(ContextoAtual);
+                    resultado = incluirDAL.Incluir(parametros);
 
-                //caso não seja sucesso reverte a transação
-                if (VerificarResultadoSucesso(resultado))
-                    SetCommit();
+                    //caso não seja sucesso reverte a transação
+                    if (VerificarResultadoSucesso(resultado))
+                        SetCommit();
+                    else
+                        SetRollback();
+                }
                 else
-                    SetRollback();
-                
+                {
+                    FormatarResultadoErro("Time não pode ser incluido. Este campeonato já tem o máximo de times possíveis");
+                }
             }
             catch (Exception erro)
             {
-                resultado = FormatarResultadoErro(erro);
+                resultado = FormatarResultadoErroSistema(erro);
                 SetRollback();
             }
 
@@ -41,19 +49,51 @@ namespace BLL
 
             try
             {
-                CampeonatoTimeDAL consultarDAL = new CampeonatoTimeDAL();
-                resultado = consultarDAL.Consultar(ContextoAtual, parametros);
+                CampeonatoTimeDAL consultarDAL = new CampeonatoTimeDAL(ContextoAtual);
+                resultado = consultarDAL.Consultar(parametros);
+
+            }
+            catch (Exception erro)
+            {
+                resultado = FormatarResultadoErroSistema(erro);
+            }
+
+            return resultado;
+        }
+
+        public bool CampeonatoTemTodosTimes(SortedList parametros)
+        {
+            bool CampTimeMax = false;
+
+            SortedList resultadoConsultaCampTime = Consultar(parametros);
+            if (VerificarResultadoSucesso(resultadoConsultaCampTime))
+            {
+                DataTable retornoConsultaCampTime = UtilSortedList.CapturarDataTable(resultadoConsultaCampTime, "retorno");
+                CampTimeMax = (retornoConsultaCampTime.Rows.Count < 8);
+            }
+
+            return CampTimeMax;
+        }
+
+        public SortedList Alterar(SortedList parametros)
+        {
+            SortedList resultado = new SortedList();
+
+            try
+            {
+                CampeonatoTimeDAL alterarDAL = new CampeonatoTimeDAL(ContextoAtual);
+                resultado = alterarDAL.Alterar(parametros);
 
                 //caso não seja sucesso reverte a transação
                 if (VerificarResultadoSucesso(resultado))
                     SetCommit();
                 else
                     SetRollback();
-
+                
             }
             catch (Exception erro)
             {
-                resultado = FormatarResultadoErro(erro);
+                resultado = FormatarResultadoErroSistema(erro);
                 SetRollback();
             }
 

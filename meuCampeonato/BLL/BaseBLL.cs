@@ -1,5 +1,5 @@
 ﻿using Biblioteca;
-using DAL.Util;
+using Biblioteca.Util;
 using System;
 using System.Collections;
 
@@ -14,9 +14,9 @@ namespace BLL
             ContextoAtual = new ContextoDb();
         }
 
-        public BaseBLL(ContextoDb Contexto)
+        public BaseBLL(ContextoDb contexto)
         {
-            ContextoAtual = new ContextoDb(Contexto);
+            ContextoAtual = new ContextoDb(contexto);
         }
 
         public void SetRollback()
@@ -29,13 +29,18 @@ namespace BLL
             ContextoAtual.SetCommit();
         }
 
-        public SortedList FormatarResultadoErro(Exception erro)
+        public SortedList FormatarResultadoErroSistema(Exception erro)
         {
             //observação Lembrar de alterar este metodo para usar variaveis de ambiente
+            return FormatarResultadoErro(erro.Message);
+        }
+
+        public SortedList FormatarResultadoErro(string mensagem)
+        {
             SortedList resultado = new SortedList
             {
                 { "tipoRetorno", "erro" },
-                { "mensagem", erro.Message }
+                { "mensagem", mensagem }
             };
 
             return resultado;
