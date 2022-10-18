@@ -23,7 +23,7 @@ namespace UI.Controllers
 
             return resultado;
         }
-        public SortedList post()
+        public SortedList Post()
         {
             SortedList parametros = new SortedList();
             parametros.Add("NM_CAMPEONATO", "1° Campeonato");

@@ -5,10 +5,10 @@ using System.Collections;
 
 namespace BLL
 {
-    public class CampeonatoBLL : BaseBLL
+    public class CampeonatoTimeBLL : BaseBLL
     {
-        public CampeonatoBLL() : base() { }
-        public CampeonatoBLL(ContextoDb contexto) : base(contexto) { }
+        public CampeonatoTimeBLL() : base() { }
+        public CampeonatoTimeBLL(ContextoDb contexto) : base(contexto) { }
 
         public SortedList Incluir(SortedList parametros)
         {
@@ -16,7 +16,7 @@ namespace BLL
 
             try
             {
-                CampeonatoDAL incluirDAL = new CampeonatoDAL();
+                CampeonatoTimeDAL incluirDAL = new CampeonatoTimeDAL();
                 resultado = incluirDAL.Incluir(ContextoAtual, parametros);
 
                 //caso não seja sucesso reverte a transação
@@ -41,7 +41,7 @@ namespace BLL
 
             try
             {
-                CampeonatoDAL consultarDAL = new CampeonatoDAL();
+                CampeonatoTimeDAL consultarDAL = new CampeonatoTimeDAL();
                 resultado = consultarDAL.Consultar(ContextoAtual, parametros);
 
                 //caso não seja sucesso reverte a transação

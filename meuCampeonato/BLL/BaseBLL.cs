@@ -2,11 +2,6 @@
 using DAL.Util;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL
 {
@@ -48,7 +43,7 @@ namespace BLL
 
         public bool VerificarResultadoSucesso(SortedList resultado)
         {
-            string tipoRetorno = UtilSortedList.CapturarCampoString(resultado, "tipoRetorno");
+            string tipoRetorno = UtilSortedList.CapturarString(resultado, "tipoRetorno");
 
             return tipoRetorno.Equals("sucesso");
         }

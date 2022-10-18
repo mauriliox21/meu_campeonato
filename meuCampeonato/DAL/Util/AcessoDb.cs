@@ -42,7 +42,7 @@ namespace DAL.Util
 
         public static SqlParameter FormatarParametro(SortedList fonteDados, string nome, bool permiteNulo)
         {
-            string valor = UtilSortedList.CapturarCampoString(fonteDados, nome);
+            string valor = UtilSortedList.CapturarString(fonteDados, nome);
             SqlParameter parametro;
 
             if (string.IsNullOrEmpty(valor))
@@ -69,14 +69,13 @@ namespace DAL.Util
             int index = 0;
             foreach (SqlParameter parametro in comando.Parameters)
             {
+                if (index != 0)
+                    comando.CommandText += " , ";
+
                 if (parametro.Value != null)
-                {
                     comando.CommandText += $" @{parametro.ParameterName} = N'{parametro.Value}'";
-                }
-                else if (parametro.Value == null)
-                {
+                else
                     comando.CommandText += $" @{parametro.ParameterName} = null";
-                }
 
                 index++;
             }
