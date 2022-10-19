@@ -20,6 +20,8 @@ namespace UI.Controllers
             CampeonatoBLL consultarBLL = new CampeonatoBLL();
             SortedList resultado = consultarBLL.Consultar(parametros);
 
+            RetornoModel retornoInterface = new RetornoModel();
+
             HttpResponseMessage resposta = Request.CreateResponse<CampeonatoModel[]>(HttpStatusCode.OK, CampeonatoModel.ConverterListaParaModeloInterce((DataTable)resultado["retorno"]));
 
             return resposta;

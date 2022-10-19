@@ -34,5 +34,23 @@ namespace BLL
 
             return resultado;
         }
+
+        public SortedList Consultar(SortedList parametros)
+        {
+            SortedList resultado = new SortedList();
+
+            try
+            {
+                FaseDAL consultarDAL = new FaseDAL(ContextoAtual);
+                resultado = consultarDAL.Consultar(parametros);
+
+            }
+            catch (Exception erro)
+            {
+                resultado = FormatarResultadoErroSistema(erro);
+            }
+
+            return resultado;
+        }
     }
 }

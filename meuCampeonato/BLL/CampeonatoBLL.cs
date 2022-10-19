@@ -56,17 +56,14 @@ namespace BLL
             return resultado;
         }
 
-        public SortedList SimularCampeonato(SortedList parametros)
+        public SortedList SimulacaoCampeonatoIncluir(SortedList parametros)
         {
             SortedList resultado = new SortedList();
 
             try
             {
-                CampeonatoTimeBLL consultaCampTime = new CampeonatoTimeBLL();
-                
-                SortedList paramConsultaCampTime = new SortedList();
-                paramConsultaCampTime["SQ_CAMPEONATO"] = parametros["SQ_CAMPEONATO"];
-                if (consultaCampTime.CampeonatoTemTodosTimes(paramConsultaCampTime))
+                SortedList retVericacaoSimularCamp = VerificarCampeonatoPodeSimular(parametros);
+                if (VerificarResultadoSucesso(retVericacaoSimularCamp))
                 {
                     //Inicia uma transacao que apenas esta classe pode reverter ou "commitar"
                     ContextoAtual.CriarTransacao();
@@ -76,6 +73,10 @@ namespace BLL
                     bool semiFinal = false;
                     bool final = false;
 
+                    CampeonatoTimeBLL consultaCampTime = new CampeonatoTimeBLL();
+                
+                    SortedList paramConsultaCampTime = new SortedList();
+                    paramConsultaCampTime["SQ_CAMPEONATO"] = parametros["SQ_CAMPEONATO"];
                     paramConsultaCampTime["ST_ELIMINADO"] = "N";
                     while (!simulacaoCompleta && !ocorreuErro)
                     {
@@ -199,13 +200,13 @@ namespace BLL
                                     CampeonatoTimeBLL alteraCampTime = new CampeonatoTimeBLL(ContextoAtual);
 
                                     int pontuacaoAtual = UtilDataTable.CapturarCampoInteiro(time1, "NR_PONTUACAO", 0);
-                                    string elimindado = UtilDataTable.CapturarCampoString(time1, "SQ_TIME").Equals(sqTimeEliminado) && !semiFinal ? "S" : "N";
+                                    string elimindado = UtilDataTable.CapturarCampoString(time1, "SQ_TIME").Equals(sqTimeEliminado) ? "S" : "N";
                                     int qtdVitoria = UtilDataTable.CapturarCampoInteiro(time1, "NR_QUANTIDADE_VITORIA", 0) + (elimindado.Equals("S") ? 0 : 1);
                                     SortedList paramAlteracaoTime = new SortedList();
                                     paramAlteracaoTime.Add("SQ_CAMPEONATO_TIME", UtilDataTable.CapturarCampoString(time1, "SQ_CAMPEONATO_TIME"));
                                     paramAlteracaoTime.Add("NR_PONTUACAO", pontuacaoAtual + (placarTime1 - placarTime2));
                                     //quando é semi final não elimina o time para que ele possa disputar o terceiro lugar
-                                    paramAlteracaoTime.Add("ST_ELIMINADO", elimindado);
+                                    paramAlteracaoTime.Add("ST_ELIMINADO", semiFinal ? "N" : elimindado);
                                     paramAlteracaoTime.Add("NR_QUANTIDADE_VITORIA", qtdVitoria);
                                     //Caso seja final inclui a colocação
                                     if (final)
@@ -241,12 +242,12 @@ namespace BLL
                                     if (!ocorreuErro)
                                     {
                                         pontuacaoAtual = UtilDataTable.CapturarCampoInteiro(time2, "NR_PONTUACAO", 0);
-                                        elimindado = UtilDataTable.CapturarCampoString(time2, "SQ_TIME").Equals(sqTimeEliminado) && !semiFinal ? "S" : "N";
-                                        qtdVitoria = UtilDataTable.CapturarCampoInteiro(time1, "NR_QUANTIDADE_VITORIA", 0) + (elimindado.Equals("S") ? 0 : 1);
+                                        elimindado = UtilDataTable.CapturarCampoString(time2, "SQ_TIME").Equals(sqTimeEliminado) ? "S" : "N";
+                                        qtdVitoria = UtilDataTable.CapturarCampoInteiro(time2, "NR_QUANTIDADE_VITORIA", 0) + (elimindado.Equals("S") ? 0 : 1);
                                         paramAlteracaoTime["SQ_CAMPEONATO_TIME"] = UtilDataTable.CapturarCampoString(time2, "SQ_CAMPEONATO_TIME");
                                         paramAlteracaoTime["NR_PONTUACAO"] = pontuacaoAtual + (placarTime2 - placarTime1);
                                         //quando é semi final não elimina o time para que ele possa disputar o terceiro lugar
-                                        paramAlteracaoTime["ST_ELIMINADO"] = elimindado;
+                                        paramAlteracaoTime["ST_ELIMINADO"] = semiFinal ? "N" : elimindado;
                                         paramAlteracaoTime["NR_QUANTIDADE_VITORIA"] = qtdVitoria;
                                         //Caso seja final inclui a colocação
                                         if (final)
@@ -292,13 +293,19 @@ namespace BLL
 
                     //caso algum dos procedimentos falhe reverte todos o procedimentos que foram feitos
                     if (ocorreuErro)
+                    {
                         SetRollback();
+                    }
                     else
+                    {
                         SetCommit();
+                        resultado["mensagem"] = "Simulação realizada com sucesso";
+                        resultado["tipoRetorno"] = "sucesso";
+                    }
                 }
                 else
                 {
-                    resultado = FormatarResultadoErro("Este campeonato não tem times suficientes para executar a simulação");
+                    resultado = retVericacaoSimularCamp;
                 }
             }
             catch (Exception erro)
@@ -306,6 +313,66 @@ namespace BLL
                 resultado = FormatarResultadoErroSistema(erro);
                 SetRollback();
             }
+
+            return resultado;
+        }
+
+        public SortedList SimulacaoCampeonatoConsultar(SortedList parametros)
+        {
+            SortedList resultado = new SortedList();
+            try
+            {
+                CampeonatoDAL consultarDAL = new CampeonatoDAL(ContextoAtual);
+                resultado = consultarDAL.SimulacaoCampeonatoConsultar(parametros);
+
+                if (VerificarResultadoSucesso(resultado))
+                {
+                    CampeonatoTimeBLL consultaCampTime = new CampeonatoTimeBLL();
+                    SortedList resultConsultaCampTime = consultaCampTime.ColocacaoCampeonatoTimeConsultar(parametros);
+
+                    if (VerificarResultadoSucesso(resultConsultaCampTime))
+                    {
+                        resultado["retornoColocacao"] = resultConsultaCampTime["retorno"];
+                    }
+                    else
+                    {
+                        resultado = resultConsultaCampTime;
+                    }
+                }
+            }
+            catch (Exception erro)
+            {
+                resultado = FormatarResultadoErroSistema(erro);
+            }
+
+            return resultado;
+        }
+
+        public SortedList VerificarCampeonatoPodeSimular(SortedList parametros)
+        {
+            SortedList resultado = new SortedList();
+            CampeonatoTimeBLL consultaCampTime = new CampeonatoTimeBLL();
+
+            if (consultaCampTime.CampeonatoTemTodosTimes(parametros))
+            {
+                FaseBLL consultaFase = new FaseBLL();
+                resultado = consultaFase.Consultar(parametros);
+
+                if (VerificarResultadoSucesso(resultado))
+                {
+                    DataTable retConsultaFase = UtilSortedList.CapturarDataTable(resultado, "retorno");
+
+                    if (retConsultaFase.Rows.Count > 0)
+                    {
+                        resultado = FormatarResultadoErro("Já existe simulação para este campeonato");
+                    }
+                }
+            }
+            else
+            {
+                resultado = FormatarResultadoErro("Este campeonato não tem times suficientes para executar a simulação");
+            }
+
 
             return resultado;
         }

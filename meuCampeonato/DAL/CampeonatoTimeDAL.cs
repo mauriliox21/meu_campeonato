@@ -21,7 +21,7 @@ namespace DAL
         public SortedList Consultar(SortedList parametros)
         {
             ComandoDb query = new ComandoDb("STP_CAMPEONATO_TIME_CONSULTAR", new ContextoDb());
-            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "SQ_CAMPEONATO", false));
+            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "SQ_CAMPEONATO", true));
             query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "ST_ELIMINADO", false));
 
             SortedList resultado = FormatarResultado(AcessoDb.ExecutarQuery(query.Comando));
@@ -39,6 +39,16 @@ namespace DAL
             query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "NR_COLOCACAO", true));
 
             SortedList resultado = FormatarResultado(AcessoDb.ExecutarQueryManutencao(ContextoAtual, query.Comando));
+
+            return resultado;
+        }
+
+        public SortedList ColocacaoCampeonatoTimeConsultar(SortedList parametros)
+        {
+            ComandoDb query = new ComandoDb("STP_COLOCACAO_CAMPEONATO_TIME_CONSULTAR", new ContextoDb());
+            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "SQ_CAMPEONATO", true));
+
+            SortedList resultado = FormatarResultado(AcessoDb.ExecutarQuery(query.Comando));
 
             return resultado;
         }

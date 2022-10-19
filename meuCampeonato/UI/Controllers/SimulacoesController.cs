@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace UI.Controllers
 {
-    public class SimulacaoController : ApiController
+    public class SimulacoesController : ApiController
     {
         public void post()
         {

@@ -86,6 +86,22 @@ namespace BLL
             return resultado;
         }
 
+        public SortedList ColocacaoCampeonatoTimeConsultar(SortedList parametros)
+        {
+            SortedList resultado = new SortedList();
+            try
+            {
+                CampeonatoTimeDAL consultarDAL = new CampeonatoTimeDAL(ContextoAtual);
+                resultado = consultarDAL.ColocacaoCampeonatoTimeConsultar(parametros);
+            }
+            catch (Exception erro)
+            {
+                resultado = FormatarResultadoErroSistema(erro);
+            }
+
+            return resultado;
+        }
+
         public bool CampeonatoTemTodosTimes(SortedList parametros)
         {
             bool CampTimeMax = false;

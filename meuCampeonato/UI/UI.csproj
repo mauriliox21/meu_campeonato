@@ -93,12 +93,13 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CampeonatosController.cs" />
-    <Compile Include="Controllers\SimulacaoController.cs" />
+    <Compile Include="Controllers\SimulacoesController.cs" />
     <Compile Include="Controllers\TimesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CampeonatoModel.cs" />
+    <Compile Include="Models\RetornoModel.cs" />
     <Compile Include="Models\TimeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
