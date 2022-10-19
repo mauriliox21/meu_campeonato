@@ -73,6 +73,8 @@ namespace BLL
 
                     bool simulacaoCompleta = false;
                     bool ocorreuErro = false;
+                    bool semiFinal = false;
+                    bool final = false;
 
                     paramConsultaCampTime["ST_ELIMINADO"] = "N";
                     while (!simulacaoCompleta && !ocorreuErro)
@@ -95,11 +97,20 @@ namespace BLL
                             DataTable timesClassificados = UtilSortedList.CapturarDataTable(reultConsultaTimeClassificado, "retorno");
                             string nomeFase = "";
                             if (timesClassificados.Rows.Count == 8)
+                            {
                                 nomeFase = "Quartas de Final";
-                            else if (timesClassificados.Rows.Count == 4)
+                            }
+                            else if (timesClassificados.Rows.Count == 4 && !semiFinal)
+                            {
                                 nomeFase = "Semi Finais";
+                                semiFinal = true;
+                            }
                             else
+                            {
                                 nomeFase = "Final";
+                                final = true;
+                                semiFinal = false;
+                            }
 
                             //inclusão da fase 
                             FaseBLL incluiFaseBLL = new FaseBLL(ContextoAtual);
@@ -127,9 +138,19 @@ namespace BLL
                             for (int i = 0; i < timesClassificados.Rows.Count && !ocorreuErro; i += 2)
                             {
                                 #region Simulação do Jogo
-                                //usa a sequência de numeros aleatorios para escolher os times 
-                                DataRow time1 = timesClassificados.Rows[timesSorteados[i]];
-                                DataRow time2 = timesClassificados.Rows[timesSorteados[i + 1]];
+                                DataRow time1;
+                                DataRow time2;
+                                if (!final)
+                                {
+                                    //usa a sequência de numeros aleatorios para escolher os times 
+                                    time1 = timesClassificados.Rows[timesSorteados[i]];
+                                    time2 = timesClassificados.Rows[timesSorteados[i + 1]];
+                                }
+                                else //quando é final não sorteia a partida jogam os times com mesma quantidade quantidade de vitorias
+                                {
+                                    time1 = timesClassificados.Rows[i];
+                                    time2 = timesClassificados.Rows[i + 1];
+                                }
 
                                 //usa uma sequencia de numeros aleatorios para gerar o placar do jogo
                                 int[] placar = UtilJogo.SortearPlacares(8);
@@ -178,11 +199,35 @@ namespace BLL
                                     CampeonatoTimeBLL alteraCampTime = new CampeonatoTimeBLL(ContextoAtual);
 
                                     int pontuacaoAtual = UtilDataTable.CapturarCampoInteiro(time1, "NR_PONTUACAO", 0);
-                                    string elimindado = UtilDataTable.CapturarCampoString(time1, "SQ_TIME").Equals(sqTimeEliminado) ? "S" : "N";
+                                    string elimindado = UtilDataTable.CapturarCampoString(time1, "SQ_TIME").Equals(sqTimeEliminado) && !semiFinal ? "S" : "N";
+                                    int qtdVitoria = UtilDataTable.CapturarCampoInteiro(time1, "NR_QUANTIDADE_VITORIA", 0) + (elimindado.Equals("S") ? 0 : 1);
                                     SortedList paramAlteracaoTime = new SortedList();
                                     paramAlteracaoTime.Add("SQ_CAMPEONATO_TIME", UtilDataTable.CapturarCampoString(time1, "SQ_CAMPEONATO_TIME"));
                                     paramAlteracaoTime.Add("NR_PONTUACAO", pontuacaoAtual + (placarTime1 - placarTime2));
+                                    //quando é semi final não elimina o time para que ele possa disputar o terceiro lugar
                                     paramAlteracaoTime.Add("ST_ELIMINADO", elimindado);
+                                    paramAlteracaoTime.Add("NR_QUANTIDADE_VITORIA", qtdVitoria);
+                                    //Caso seja final inclui a colocação
+                                    if (final)
+                                    {
+                                        string colocacao = "";
+                                        //caso seja a primeira partida da final e o time gahou todas as patidas ele é o campeão
+                                        if (i == 0 && qtdVitoria == 3)
+                                            colocacao = "1";
+                                        //caso seja a primeira partida da final mas o time não gahou todas as patidas ele é o segundo colocado
+                                        else if (i == 0 && qtdVitoria != 3)
+                                            colocacao = "2";
+                                        //caso não seja a primeira partida da final, mas o time é o vencedor, ele é o terceiro colocado
+                                        else if(i != 0 && elimindado.Equals("N"))
+                                            colocacao = "3";
+                                        else
+                                            colocacao = "4";
+                                        paramAlteracaoTime.Add("NR_COLOCACAO", colocacao);
+                                    }
+                                    else
+                                    {
+                                        paramAlteracaoTime.Add("NR_COLOCACAO", "100");
+                                    }
 
                                     SortedList resultAlteracaoTime = alteraCampTime.Alterar(paramAlteracaoTime);
 
@@ -196,10 +241,34 @@ namespace BLL
                                     if (!ocorreuErro)
                                     {
                                         pontuacaoAtual = UtilDataTable.CapturarCampoInteiro(time2, "NR_PONTUACAO", 0);
-                                        elimindado = UtilDataTable.CapturarCampoString(time2, "SQ_TIME").Equals(sqTimeEliminado) ? "S" : "N";
+                                        elimindado = UtilDataTable.CapturarCampoString(time2, "SQ_TIME").Equals(sqTimeEliminado) && !semiFinal ? "S" : "N";
+                                        qtdVitoria = UtilDataTable.CapturarCampoInteiro(time1, "NR_QUANTIDADE_VITORIA", 0) + (elimindado.Equals("S") ? 0 : 1);
                                         paramAlteracaoTime["SQ_CAMPEONATO_TIME"] = UtilDataTable.CapturarCampoString(time2, "SQ_CAMPEONATO_TIME");
                                         paramAlteracaoTime["NR_PONTUACAO"] = pontuacaoAtual + (placarTime2 - placarTime1);
+                                        //quando é semi final não elimina o time para que ele possa disputar o terceiro lugar
                                         paramAlteracaoTime["ST_ELIMINADO"] = elimindado;
+                                        paramAlteracaoTime["NR_QUANTIDADE_VITORIA"] = qtdVitoria;
+                                        //Caso seja final inclui a colocação
+                                        if (final)
+                                        {
+                                            string colocacao = "";
+                                            //caso seja a primeira partida da final e o time gahou todas as patidas ele é o campeão
+                                            if (i == 0 && qtdVitoria == 3)
+                                                colocacao = "1";
+                                            //caso seja a primeira partida da final mas o time não gahou todas as patidas ele é o segundo colocado
+                                            else if (i == 0 && qtdVitoria != 3)
+                                                colocacao = "2";
+                                            //caso não seja a primeira partida da final, mas o time é o vencedor, ele é o terceiro colocado
+                                            else if (i != 0 && elimindado.Equals("N"))
+                                                colocacao = "3";
+                                            else
+                                                colocacao = "4";
+                                            paramAlteracaoTime["NR_COLOCACAO"] = colocacao;
+                                        }
+                                        else
+                                        {
+                                            paramAlteracaoTime["NR_COLOCACAO"] = "100";
+                                        }
 
                                         resultAlteracaoTime = alteraCampTime.Alterar(paramAlteracaoTime);
 
@@ -217,8 +286,7 @@ namespace BLL
 
                         if (!ocorreuErro)
                         {
-                            DataTable timesClassificados = UtilSortedList.CapturarDataTable(reultConsultaTimeClassificado, "retorno");
-                            simulacaoCompleta = timesClassificados.Rows.Count == 2;
+                            simulacaoCompleta = final;
                         }
                     }
 

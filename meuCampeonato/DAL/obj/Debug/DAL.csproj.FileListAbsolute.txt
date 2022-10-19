@@ -1,13 +1,13 @@
 D:\projetos_c\meu_campeonato\meuCampeonato\DAL\bin\Debug\DAL.dll.config
 D:\projetos_c\meu_campeonato\meuCampeonato\DAL\bin\Debug\DAL.dll
 D:\projetos_c\meu_campeonato\meuCampeonato\DAL\bin\Debug\DAL.pdb
+D:\projetos_c\meu_campeonato\meuCampeonato\DAL\bin\Debug\Biblioteca.dll
 D:\projetos_c\meu_campeonato\meuCampeonato\DAL\bin\Debug\EntityFramework.dll
+D:\projetos_c\meu_campeonato\meuCampeonato\DAL\bin\Debug\Biblioteca.pdb
+D:\projetos_c\meu_campeonato\meuCampeonato\DAL\bin\Debug\Biblioteca.dll.config
 D:\projetos_c\meu_campeonato\meuCampeonato\DAL\bin\Debug\EntityFramework.xml
 D:\projetos_c\meu_campeonato\meuCampeonato\DAL\obj\Debug\DAL.csproj.AssemblyReference.cache
 D:\projetos_c\meu_campeonato\meuCampeonato\DAL\obj\Debug\DAL.csproj.CoreCompileInputs.cache
 D:\projetos_c\meu_campeonato\meuCampeonato\DAL\obj\Debug\DAL.csproj.CopyComplete
 D:\projetos_c\meu_campeonato\meuCampeonato\DAL\obj\Debug\DAL.dll
 D:\projetos_c\meu_campeonato\meuCampeonato\DAL\obj\Debug\DAL.pdb
-D:\projetos_c\meu_campeonato\meuCampeonato\DAL\bin\Debug\Biblioteca.dll
-D:\projetos_c\meu_campeonato\meuCampeonato\DAL\bin\Debug\Biblioteca.pdb
-D:\projetos_c\meu_campeonato\meuCampeonato\DAL\bin\Debug\Biblioteca.dll.config

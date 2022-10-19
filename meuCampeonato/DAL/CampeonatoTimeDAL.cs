@@ -35,6 +35,8 @@ namespace DAL
             query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "SQ_CAMPEONATO_TIME", true));
             query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "NR_PONTUACAO", true));
             query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "ST_ELIMINADO", false));
+            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "NR_QUANTIDADE_VITORIA", true));
+            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "NR_COLOCACAO", true));
 
             SortedList resultado = FormatarResultado(AcessoDb.ExecutarQueryManutencao(ContextoAtual, query.Comando));
 
