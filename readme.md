@@ -11,7 +11,7 @@ Banco de dados: o banco de dados utilizado foi o SQL Server, o arquivo físico d
 
 ### Construção da Aplicação
 
-A aplicação foi criada utilizando a estrutura de camadas UI (User Interface), BLL (Bussiness Logic Layer), DAL (Data Acess Layer).
+A aplicação foi criada utilizando a estrutura de camadas API, BLL (Bussiness Logic Layer), DAL (Data Acess Layer).
 
 Padrão de escrita de código: Todos os nomes de tabelas colunas e procedures foram escritos com letras maiúsculas, onde os nomes compostos são separados por “_”, além disso todos tem prefixos em seus nomes relacionados a seus tipos (ex: Nomes de tabelas se iniciam com TB, storage procedures com STP). Nomes de coluna e variáveis tem o prefixo dos dados que vão armazenar (ex: Colunas com o prefixo SQ armazenam Sequências, colunas com o prefixo NM armazenam Nomes).
 
