@@ -46,7 +46,5 @@ namespace DAL
 
             return resultado;
         }
-
-
     }
 }

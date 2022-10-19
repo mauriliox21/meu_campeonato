@@ -37,23 +37,5 @@ namespace BLL
 
             return resultado;
         }
-
-        public SortedList Consultar(SortedList parametros)
-        {
-            SortedList resultado = new SortedList();
-
-            try
-            {
-                JogoDAL consultarDAL = new JogoDAL(ContextoAtual);
-                resultado = consultarDAL.Consultar(parametros);
-
-            }
-            catch (Exception erro)
-            {
-                resultado = FormatarResultadoErroSistema(erro);
-            }
-
-            return resultado;
-        }
     }
 }

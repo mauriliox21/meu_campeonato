@@ -20,17 +20,5 @@ namespace DAL
             
             return resultado;
         }
-
-        public SortedList Consultar(SortedList parametros)
-        {
-            ComandoDb query = new ComandoDb("STP_JOGO_CONSULTAR", new ContextoDb());
-            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "NM_CAMPEONATO", false));
-
-            SortedList resultado = FormatarResultado(AcessoDb.ExecutarQuery(query.Comando));
-
-            return resultado;
-        }
-
-
     }
 }
