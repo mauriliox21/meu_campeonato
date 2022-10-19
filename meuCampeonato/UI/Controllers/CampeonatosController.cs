@@ -20,20 +20,80 @@ namespace UI.Controllers
             CampeonatoBLL consultarBLL = new CampeonatoBLL();
             SortedList resultado = consultarBLL.Consultar(parametros);
 
-            RetornoModel retornoInterface = new RetornoModel();
+            RespostaModel retornoInterface = RespostaModel.ConverterListaParaModeloInterce(resultado);
 
-            HttpResponseMessage resposta = Request.CreateResponse<CampeonatoModel[]>(HttpStatusCode.OK, CampeonatoModel.ConverterListaParaModeloInterce((DataTable)resultado["retorno"]));
+            HttpResponseMessage resposta;
+
+            if (retornoInterface.status.Equals("sucesso"))
+            {
+                retornoInterface.retorno = CampeonatoModel.ConverterListaParaModeloInterce((DataTable)resultado["retorno"]);
+                resposta = Request.CreateResponse<RespostaModel>(HttpStatusCode.OK, retornoInterface);
+            }
+            else
+            {
+                retornoInterface.retorno = "";
+                resposta = Request.CreateResponse<RespostaModel>(HttpStatusCode.InternalServerError, retornoInterface);
+            }
 
             return resposta;
         }
-        public SortedList Post([FromBody] CampeonatoModel campeonato)
+
+        public HttpResponseMessage Get([FromUri] string sq)
+        {
+            SortedList parametros = new SortedList();
+            parametros.Add("SQ_CAMPEONATO", sq);
+
+            CampeonatoBLL consultarBLL = new CampeonatoBLL();
+            SortedList resultado = consultarBLL.Detalhar(parametros);
+
+            RespostaModel retornoInterface = RespostaModel.ConverterListaParaModeloInterce(resultado);
+
+            HttpResponseMessage resposta;
+
+            if (retornoInterface.status.Equals("sucesso"))
+            {
+                CampeonatoModel campeonatoInterface = CampeonatoModel.ConverterListaParaModeloInterce((DataTable)resultado["retorno"])[0];
+                LinhaColocacaoModel[] colocacaoInterface = LinhaColocacaoModel.ConverterListaParaModeloInterce((DataTable)resultado["retornoColocacao"]);
+                retornoInterface.retorno = new SortedList{
+                    { "campeonato", campeonatoInterface },
+                    { "times", colocacaoInterface }
+                };
+                resposta = Request.CreateResponse<RespostaModel>(HttpStatusCode.OK, retornoInterface);
+            }
+            else
+            {
+                retornoInterface.retorno = "";
+                resposta = Request.CreateResponse<RespostaModel>(HttpStatusCode.InternalServerError, retornoInterface);
+            }
+
+            return resposta;
+        }
+
+        public HttpResponseMessage Post([FromBody] CampeonatoModel campeonato)
         {
             SortedList parametros = campeonato.ConverterParaModeloSistema();
 
             CampeonatoBLL incluirBLL = new CampeonatoBLL();
             SortedList resultado = incluirBLL.Incluir(parametros);
 
-            return resultado;
+            RespostaModel retornoInterface = RespostaModel.ConverterListaParaModeloInterce(resultado);
+
+            HttpResponseMessage resposta;
+
+            if (retornoInterface.status.Equals("sucesso"))
+            {
+                ChaveRegistroModel chaveRegistro = ChaveRegistroModel.ConverterParaModeloInterce((DataTable)resultado["retorno"]);
+                retornoInterface.retorno = chaveRegistro;
+
+                resposta = Request.CreateResponse<RespostaModel>(HttpStatusCode.Created, retornoInterface);
+            }
+            else
+            {
+                retornoInterface.retorno = "";
+                resposta = Request.CreateResponse<RespostaModel>(HttpStatusCode.InternalServerError, retornoInterface);
+            }
+
+            return resposta;
         }
     }
 }

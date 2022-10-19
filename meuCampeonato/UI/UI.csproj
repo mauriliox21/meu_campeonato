@@ -99,7 +99,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CampeonatoModel.cs" />
-    <Compile Include="Models\RetornoModel.cs" />
+    <Compile Include="Models\ChaveRegistroModel.cs" />
+    <Compile Include="Models\LinhaColocacaoModel.cs" />
+    <Compile Include="Models\LinhaSimulacaoModel.cs" />
+    <Compile Include="Models\RespostaModel.cs" />
     <Compile Include="Models\TimeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

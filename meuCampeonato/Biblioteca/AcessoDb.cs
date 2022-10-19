@@ -102,7 +102,7 @@ namespace Biblioteca
             DataTable tabela = new DataTable();
 
             //Para minimizar o risco de "falsos positivos" verifica se a query é compativél com o método
-            if (!comando.CommandText.EndsWith("CONSULTAR"))
+            if (!comando.CommandText.EndsWith("CONSULTAR") && !comando.CommandText.EndsWith("DETALHAR"))
             {
                 string mensagemErro = "Não é possivel executar uma query que não seja de \"Consulta\" através do método AcessoDb.ExecutarQuery(). "
                                     + "Tentativiva de execução: " + comando.CommandText;

@@ -19,15 +19,23 @@ namespace BLL
 
             try
             {
-                CampeonatoDAL incluirDAL = new CampeonatoDAL(ContextoAtual);
-                resultado = incluirDAL.Incluir(parametros);
+                string mensagem = "";
+                UtilValidacao.ValidarParametroAlfanumerico(parametros["NM_CAMPEONATO"], "nomeCampeonato", ref mensagem, 100, true);
+                if (mensagem == "")
+                {
+                    CampeonatoDAL incluirDAL = new CampeonatoDAL(ContextoAtual);
+                    resultado = incluirDAL.Incluir(parametros);
 
-                //caso não seja sucesso reverte a transação
-                if (VerificarResultadoSucesso(resultado))
-                    SetCommit();
+                    //caso não seja sucesso reverte a transação
+                    if (VerificarResultadoSucesso(resultado))
+                        SetCommit();
+                    else
+                        SetRollback();
+                }
                 else
-                    SetRollback();
-                
+                {
+                    resultado = FormatarResultadoErro(mensagem);
+                }
             }
             catch (Exception erro)
             {
@@ -44,9 +52,67 @@ namespace BLL
 
             try
             {
-                CampeonatoDAL consultarDAL = new CampeonatoDAL(ContextoAtual);
-                resultado = consultarDAL.Consultar(parametros);
+                string mensagem = "";
+                UtilValidacao.ValidarParametroAlfanumerico(parametros["NM_CAMPEONATO"], "nomeCampeonato", ref mensagem, 100, false);
+                if (mensagem == "")
+                {
+                    CampeonatoDAL consultarDAL = new CampeonatoDAL(ContextoAtual);
+                    resultado = consultarDAL.Consultar(parametros);
+                }
+                else
+                {
+                    resultado = FormatarResultadoErro(mensagem);
+                }
+            }
+            catch (Exception erro)
+            {
+                resultado = FormatarResultadoErroSistema(erro);
+            }
 
+            return resultado;
+        }
+
+        public SortedList Detalhar(SortedList parametros)
+        {
+            SortedList resultado = new SortedList();
+
+            try
+            {
+                string mensagem = "";
+                UtilValidacao.ValidarParametroInteiro(parametros["SQ_CAMPEONATO"], "sqCampeonato", ref mensagem, true);
+                if (mensagem == "")
+                {
+                    CampeonatoDAL detalharDAL = new CampeonatoDAL(ContextoAtual);
+                    resultado = detalharDAL.Detalhar(parametros);
+
+                    if (VerificarResultadoSucesso(resultado))
+                    {
+                        DataTable retConsultaCamp = UtilSortedList.CapturarDataTable(resultado, "retorno");
+
+                        if(retConsultaCamp.Rows.Count == 1)
+                        {
+                            CampeonatoTimeBLL consultaCampTimeBLL = new CampeonatoTimeBLL();
+                            SortedList resultConsultaCampTime = consultaCampTimeBLL.ColocacaoCampeonatoTimeConsultar(parametros);
+
+                            if (VerificarResultadoSucesso(resultConsultaCampTime))
+                            {
+                                resultado["retornoColocacao"] = resultConsultaCampTime["retorno"];
+                            }
+                            else
+                            {
+                                resultado = resultConsultaCampTime;
+                            }
+                        }
+                        else
+                        {
+                            resultado = FormatarResultadoErro("Campeonato não encontrado");
+                        }
+                    }
+                }
+                else
+                {
+                    resultado = FormatarResultadoErro(mensagem);
+                }
             }
             catch (Exception erro)
             {
@@ -322,22 +388,40 @@ namespace BLL
             SortedList resultado = new SortedList();
             try
             {
-                CampeonatoDAL consultarDAL = new CampeonatoDAL(ContextoAtual);
-                resultado = consultarDAL.SimulacaoCampeonatoConsultar(parametros);
+                string mensagem = "";
+                UtilValidacao.ValidarParametroInteiro(parametros["SQ_CAMPEONATO"], "sqCampeonato", ref mensagem, true);
 
-                if (VerificarResultadoSucesso(resultado))
+                if (mensagem == "")
                 {
-                    CampeonatoTimeBLL consultaCampTime = new CampeonatoTimeBLL();
-                    SortedList resultConsultaCampTime = consultaCampTime.ColocacaoCampeonatoTimeConsultar(parametros);
+                    CampeonatoDAL consultarDAL = new CampeonatoDAL(ContextoAtual);
+                    resultado = consultarDAL.SimulacaoCampeonatoConsultar(parametros);
 
-                    if (VerificarResultadoSucesso(resultConsultaCampTime))
+                    if (VerificarResultadoSucesso(resultado))
                     {
-                        resultado["retornoColocacao"] = resultConsultaCampTime["retorno"];
+                        DataTable retConsultaSimulacao = UtilSortedList.CapturarDataTable(resultado, "retorno");
+                        if (retConsultaSimulacao.Rows.Count > 0)
+                        {
+                            CampeonatoTimeBLL consultaCampTime = new CampeonatoTimeBLL();
+                            SortedList resultConsultaCampTime = consultaCampTime.ColocacaoCampeonatoTimeConsultar(parametros);
+
+                            if (VerificarResultadoSucesso(resultConsultaCampTime))
+                            {
+                                resultado["retornoColocacao"] = resultConsultaCampTime["retorno"];
+                            }
+                            else
+                            {
+                                resultado = resultConsultaCampTime;
+                            }
+                        }
+                        else
+                        {
+                            resultado = FormatarResultadoErro("Não existe simulação para este campeonato");
+                        }
                     }
-                    else
-                    {
-                        resultado = resultConsultaCampTime;
-                    }
+                }
+                else
+                {
+                    resultado = FormatarResultadoErro(mensagem);
                 }
             }
             catch (Exception erro)

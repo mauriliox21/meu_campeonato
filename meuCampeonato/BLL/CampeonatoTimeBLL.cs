@@ -49,8 +49,18 @@ namespace BLL
 
             try
             {
-                CampeonatoTimeDAL consultarDAL = new CampeonatoTimeDAL(ContextoAtual);
-                resultado = consultarDAL.Consultar(parametros);
+                string mensagem = "";
+                UtilValidacao.ValidarParametroInteiro(parametros["SQ_CAMPEONATO"], "sqCampeonato", ref mensagem, true);
+
+                if (mensagem == "")
+                { 
+                    CampeonatoTimeDAL consultarDAL = new CampeonatoTimeDAL(ContextoAtual);
+                    resultado = consultarDAL.Consultar(parametros);
+                }
+                else
+                {
+                    resultado = FormatarResultadoErro(mensagem);
+                }
 
             }
             catch (Exception erro)

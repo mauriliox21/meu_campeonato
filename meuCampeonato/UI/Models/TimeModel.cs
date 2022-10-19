@@ -16,8 +16,7 @@ namespace UI.Models
         {
             SortedList campeonatoSistema = new SortedList();
             campeonatoSistema.Add("SQ_CAMPEONATO", this.sqCampeonato);
-            if(this.sqTime != null)
-                campeonatoSistema.Add("SQ_TIME", this.sqTime);
+            campeonatoSistema.Add("SQ_TIME", this.sqTime);
             campeonatoSistema.Add("NM_TIME", this.nomeTime);
 
             return campeonatoSistema;

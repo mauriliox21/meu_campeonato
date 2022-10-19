@@ -27,6 +27,16 @@ namespace DAL
             return resultado;
         }
 
+        public SortedList Detalhar(SortedList parametros)
+        {
+            ComandoDb query = new ComandoDb("STP_CAMPEONATO_DETALHAR", new ContextoDb());
+            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "SQ_CAMPEONATO", true));
+
+            SortedList resultado = FormatarResultado(AcessoDb.ExecutarQuery(query.Comando));
+
+            return resultado;
+        }
+
         public SortedList SimulacaoCampeonatoConsultar(SortedList parametros)
         {
             ComandoDb query = new ComandoDb("STP_SIMULACAO_CAMPEONATO_CONSULTAR", new ContextoDb());

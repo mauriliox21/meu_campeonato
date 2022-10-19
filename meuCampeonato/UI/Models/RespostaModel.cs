@@ -8,15 +8,15 @@ using System.Web;
 
 namespace UI.Models
 {
-    public class RetornoModel
+    public class RespostaModel
     {
         public string mensagem { get; set; }
         public string status { get; set; }
         public object retorno { get; set; }
 
-        public static RetornoModel ConverterListaParaModeloInterce(SortedList retornoSistema)
+        public static RespostaModel ConverterListaParaModeloInterce(SortedList retornoSistema)
         {
-            RetornoModel retornoInterface = new RetornoModel();
+            RespostaModel retornoInterface = new RespostaModel();
             retornoInterface.mensagem = UtilSortedList.CapturarString(retornoSistema, "mensagem");
             retornoInterface.status = UtilSortedList.CapturarString(retornoSistema, "tipoRetorno");
 

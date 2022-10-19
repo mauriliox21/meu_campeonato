@@ -32,7 +32,7 @@ namespace BLL
         public SortedList FormatarResultadoErroSistema(Exception erro)
         {
             //observação Lembrar de alterar este metodo para usar variaveis de ambiente
-            return FormatarResultadoErro(erro.Message);
+            return FormatarResultadoErro("Erro Interno do Sistema");
         }
 
         public SortedList FormatarResultadoErro(string mensagem)

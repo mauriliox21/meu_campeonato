@@ -12,6 +12,7 @@ namespace UI.Models
     {
         public string sqCampeonato { get; set; }
         public string nomeCampeonato { get; set; }
+        public string nomeTimeCampeao { get; set; }
 
         public SortedList ConverterParaModeloSistema()
         {
@@ -27,6 +28,7 @@ namespace UI.Models
             CampeonatoModel campeonatoInterface = new CampeonatoModel();
             campeonatoInterface.sqCampeonato = UtilDataTable.CapturarCampoString(campeonatoSistema, "SQ_CAMPEONATO");
             campeonatoInterface.nomeCampeonato = UtilDataTable.CapturarCampoString(campeonatoSistema, "NM_CAMPEONATO");
+            campeonatoInterface.nomeTimeCampeao = UtilDataTable.CapturarCampoString(campeonatoSistema, "NM_TIME_CAMPEAO");
 
             return campeonatoInterface;
         }

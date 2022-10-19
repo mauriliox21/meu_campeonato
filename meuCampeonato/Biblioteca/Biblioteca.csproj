@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\UtilSortedList.cs" />
     <Compile Include="Util\UtilJogo.cs" />
+    <Compile Include="Util\UtilValidacao.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

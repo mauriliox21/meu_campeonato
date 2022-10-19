@@ -11,7 +11,16 @@ BEGIN
 
 	DECLARE @INSTRUCAO NVARCHAR(MAX)
 
-	SET @INSTRUCAO = ' SELECT DISTINCT FAS.NM_FASE, TIM1.NM_TIME, TIM2.NM_TIME, JOG.*, ''sucesso'' AS CT_TIPO_RETORNO
+	DECLARE @SQ_TIME_CAMPEAO INT
+
+	SET @SQ_TIME_CAMPEAO = ISNULL((SELECT TOP 1 CAT.SQ_TIME 
+                                   FROM TB_CAMPEONATO_TIME CAT WITH(NOLOCK)
+                                   WHERE CAT.SQ_CAMPEONATO = @SQ_CAMPEONATO
+                                   AND CAT.NR_COLOCACAO = 1), 0)
+
+	-- A disputa do terceiro lugar é uma partida da fase final que não inclui o time campeão
+	SET @INSTRUCAO = ' SELECT IIF(FAS.NM_FASE = ''Final'' AND TIM1.SQ_TIME <> '+ CAST(@SQ_TIME_CAMPEAO AS VARCHAR(10)) +' AND TIM2.SQ_TIME <> '+ CAST(@SQ_TIME_CAMPEAO AS VARCHAR(10)) +', ''Disputa do 3° lugar'', FAS.NM_FASE) AS NM_FASE, 
+	                   TIM1.NM_TIME AS NM_TIME_1, TIM2.NM_TIME AS NM_TIME_2, JOG.*, ''sucesso'' AS CT_TIPO_RETORNO
                        FROM TB_JOGO JOG WITH(NOLOCK)
                        INNER JOIN TB_FASE FAS WITH(NOLOCK) ON JOG.SQ_FASE = FAS.SQ_FASE
                        INNER JOIN TB_TIME TIM1 WITH(NOLOCK) ON JOG.SQ_TIME_1 = TIM1.SQ_TIME
