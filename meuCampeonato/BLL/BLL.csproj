@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseBLL.cs" />
+    <Compile Include="JogoBLL.cs" />
+    <Compile Include="FaseBLL.cs" />
     <Compile Include="CampeonatoTimeBLL.cs" />
     <Compile Include="TimeBLL.cs" />
     <Compile Include="CampeonatoBLL.cs" />

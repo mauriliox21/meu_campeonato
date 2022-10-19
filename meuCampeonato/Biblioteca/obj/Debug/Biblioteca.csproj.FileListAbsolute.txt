@@ -4,3 +4,9 @@ D:\projetos_c\meu_campeonato\meuCampeonato\Biblioteca\obj\Debug\Biblioteca.cspro
 D:\projetos_c\meu_campeonato\meuCampeonato\Biblioteca\obj\Debug\Biblioteca.csproj.CoreCompileInputs.cache
 D:\projetos_c\meu_campeonato\meuCampeonato\Biblioteca\obj\Debug\Biblioteca.dll
 D:\projetos_c\meu_campeonato\meuCampeonato\Biblioteca\obj\Debug\Biblioteca.pdb
+D:\projetos_c\meu_campeonato\meuCampeonato\Biblioteca\bin\Debug\Biblioteca.dll.config
+D:\projetos_c\meu_campeonato\meuCampeonato\Biblioteca\bin\Debug\EntityFramework.dll
+D:\projetos_c\meu_campeonato\meuCampeonato\Biblioteca\bin\Debug\EntityFramework.SqlServer.dll
+D:\projetos_c\meu_campeonato\meuCampeonato\Biblioteca\bin\Debug\EntityFramework.xml
+D:\projetos_c\meu_campeonato\meuCampeonato\Biblioteca\bin\Debug\EntityFramework.SqlServer.xml
+D:\projetos_c\meu_campeonato\meuCampeonato\Biblioteca\obj\Debug\Biblioteca.csproj.CopyComplete

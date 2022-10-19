@@ -21,7 +21,8 @@ namespace DAL
         public SortedList Consultar(SortedList parametros)
         {
             ComandoDb query = new ComandoDb("STP_CAMPEONATO_TIME_CONSULTAR", new ContextoDb());
-            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "NM_CAMPEONATO", false));
+            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "SQ_CAMPEONATO", false));
+            query.IncluirParametro(AcessoDb.FormatarParametro(parametros, "ST_ELIMINADO", false));
 
             SortedList resultado = FormatarResultado(AcessoDb.ExecutarQuery(query.Comando));
 

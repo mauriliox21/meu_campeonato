@@ -7,26 +7,26 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using UI.Models;
 
 namespace UI.Controllers
 {
     public class CampeonatosController : ApiController
     {
-        [HttpGet]
-        public SortedList Get()
+        public HttpResponseMessage Get([FromBody] CampeonatoModel campeonato)
         {
-            SortedList parametros = new SortedList();
-            parametros.Add("NM_CAMPEONATO", "");
+            SortedList parametros = campeonato.ConverterParaModeloSistema();
 
             CampeonatoBLL consultarBLL = new CampeonatoBLL();
             SortedList resultado = consultarBLL.Consultar(parametros);
 
-            return resultado;
+            HttpResponseMessage resposta = Request.CreateResponse<CampeonatoModel[]>(HttpStatusCode.OK, CampeonatoModel.ConverterListaParaModeloInterce((DataTable)resultado["retorno"]));
+
+            return resposta;
         }
-        public SortedList Post()
+        public SortedList Post([FromBody] CampeonatoModel campeonato)
         {
-            SortedList parametros = new SortedList();
-            parametros.Add("NM_CAMPEONATO", "1° Campeonato");
+            SortedList parametros = campeonato.ConverterParaModeloSistema();
 
             CampeonatoBLL incluirBLL = new CampeonatoBLL();
             SortedList resultado = incluirBLL.Incluir(parametros);

@@ -73,7 +73,7 @@ namespace Biblioteca
             DataTable tabela = new DataTable();
 
             //Para minimizar o risco de "falsos positivos" verifica se a query é compativél com o método
-            if (!comando.CommandText.EndsWith("INCLUIR"))
+            if (!comando.CommandText.EndsWith("INCLUIR") && !comando.CommandText.EndsWith("ALTERAR"))
             {
                 string mensagemErro = "Não é recomendavel executar uma query que não seja de \"Manutenção\" através do método AcessoDb.ExecutarQueryManutencao(). "
                                     + "Tentativiva de execução: " + comando.CommandText;

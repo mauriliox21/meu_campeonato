@@ -46,34 +46,40 @@ namespace Biblioteca.Util
             return sqTimeEliminado;
         }
 
-        public static int[] SortearTimes(int qtdTimes)
+        public static int[] SortearTimes(int qtdTimes, int indiceMax)
         {
-            int[] timesSorteados = { };
+            //usa um array de string para comparar pois quando se usa array de int o ultimo valor do array vai ser sempre 0
+
+            string[] timesSorteadosComparacao = new string[qtdTimes];
+            int[] timesSorteados = new int[qtdTimes];
 
             Random rdm = new Random();
-            while (timesSorteados.Length < qtdTimes)
+            int contador = 0;
+            while (contador < qtdTimes)
             {
-                int indice = rdm.Next(qtdTimes);
-                if (!timesSorteados.Contains(indice))
-                    timesSorteados.Append(indice);
+                int indice = rdm.Next(0, indiceMax + 1);
+                if (!timesSorteadosComparacao.Contains(indice.ToString()))
+                {
+                    timesSorteadosComparacao[contador] = indice.ToString(); 
+                    timesSorteados[contador] = indice;
+                    contador++;
+                }
             }
 
             return timesSorteados;
         }
 
-        public static int[] SortearPlacares(int maxPlacar)
+        public static int[] SortearPlacares(int indiceMax)
         {
-            int[] timesSorteados = { };
+            int[] placares = new int[2];
 
             Random rdm = new Random();
-            while (timesSorteados.Length < 2)
+            for (int i = 0; i < placares.Length; i++)
             {
-                int indice = rdm.Next(maxPlacar);
-                if (!timesSorteados.Contains(indice))
-                    timesSorteados.Append(indice);
+                placares[i] = rdm.Next(indiceMax + 1);
             }
 
-            return timesSorteados;
+            return placares;
         }
     }
 }

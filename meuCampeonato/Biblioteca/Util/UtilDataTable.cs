@@ -63,13 +63,15 @@ namespace Biblioteca.Util
                     string dataString = linha[coluna].ToString().Split(' ')[0];
                     string horaString = linha[coluna].ToString().Split(' ')[1];
 
-                    int dia = int.Parse(dataString.Split('-')[0]);
-                    int mes = int.Parse(dataString.Split('-')[1]);
-                    int ano = int.Parse(dataString.Split('-')[2]);
+                    char separadorData = dataString.Contains("-") ? '-' : '/';
 
-                    int hora = int.Parse(horaString.Split('-')[0]);
-                    int min = int.Parse(horaString.Split('-')[1]);
-                    int seg = int.Parse(horaString.Split('-')[2]);
+                    int dia = int.Parse(dataString.Split(separadorData)[0]);
+                    int mes = int.Parse(dataString.Split(separadorData)[1]);
+                    int ano = int.Parse(dataString.Split(separadorData)[2]);
+
+                    int hora = int.Parse(horaString.Split(':')[0]);
+                    int min = int.Parse(horaString.Split(':')[1]);
+                    int seg = int.Parse(horaString.Split(':')[2]);
 
                     resultado = new DateTime(ano, mes, dia, hora, min, seg);
                 }

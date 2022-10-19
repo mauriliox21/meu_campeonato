@@ -79,3 +79,4 @@ D:\projetos_c\meu_campeonato\meuCampeonato\UI\bin\EntityFramework.SqlServer.dll
 D:\projetos_c\meu_campeonato\meuCampeonato\UI\bin\EntityFramework.SqlServer.xml
 D:\projetos_c\meu_campeonato\meuCampeonato\UI\bin\Biblioteca.dll
 D:\projetos_c\meu_campeonato\meuCampeonato\UI\bin\Biblioteca.pdb
+D:\projetos_c\meu_campeonato\meuCampeonato\UI\bin\Biblioteca.dll.config

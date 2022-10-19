@@ -31,7 +31,7 @@ namespace BLL
                 }
                 else
                 {
-                    FormatarResultadoErro("Time não pode ser incluido. Este campeonato já tem o máximo de times possíveis");
+                    resultado = FormatarResultadoErro("Time não pode ser incluido. Este campeonato já tem o máximo de times possíveis");
                 }
             }
             catch (Exception erro)
@@ -61,20 +61,6 @@ namespace BLL
             return resultado;
         }
 
-        public bool CampeonatoTemTodosTimes(SortedList parametros)
-        {
-            bool CampTimeMax = false;
-
-            SortedList resultadoConsultaCampTime = Consultar(parametros);
-            if (VerificarResultadoSucesso(resultadoConsultaCampTime))
-            {
-                DataTable retornoConsultaCampTime = UtilSortedList.CapturarDataTable(resultadoConsultaCampTime, "retorno");
-                CampTimeMax = (retornoConsultaCampTime.Rows.Count < 8);
-            }
-
-            return CampTimeMax;
-        }
-
         public SortedList Alterar(SortedList parametros)
         {
             SortedList resultado = new SortedList();
@@ -98,6 +84,20 @@ namespace BLL
             }
 
             return resultado;
+        }
+
+        public bool CampeonatoTemTodosTimes(SortedList parametros)
+        {
+            bool CampTimeMax = false;
+
+            SortedList resultadoConsultaCampTime = Consultar(parametros);
+            if (VerificarResultadoSucesso(resultadoConsultaCampTime))
+            {
+                DataTable retornoConsultaCampTime = UtilSortedList.CapturarDataTable(resultadoConsultaCampTime, "retorno");
+                CampTimeMax = (retornoConsultaCampTime.Rows.Count == 8);
+            }
+
+            return CampTimeMax;
         }
     }
 }

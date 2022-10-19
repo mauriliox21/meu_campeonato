@@ -12,3 +12,4 @@ D:\projetos_c\meu_campeonato\meuCampeonato\BLL\obj\Debug\BLL.dll
 D:\projetos_c\meu_campeonato\meuCampeonato\BLL\obj\Debug\BLL.pdb
 D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\Biblioteca.dll
 D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\Biblioteca.pdb
+D:\projetos_c\meu_campeonato\meuCampeonato\BLL\bin\Debug\Biblioteca.dll.config

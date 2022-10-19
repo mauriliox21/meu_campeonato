@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseDAL.cs" />
+    <Compile Include="JogoDAL.cs" />
+    <Compile Include="FaseDAL.cs" />
     <Compile Include="CampeonatoTimeDAL.cs" />
     <Compile Include="TimeDAL.cs" />
     <Compile Include="CampeonatoDAL.cs" />

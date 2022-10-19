@@ -6,16 +6,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using UI.Models;
 
 namespace UI.Controllers
 {
     public class TimesController : ApiController
     {
-        public SortedList Post()
+        public SortedList Post([FromBody] TimeModel time)
         {
-            SortedList parametro = new SortedList();
-            parametro.Add("SQ_CAMPEONATO", "5");
-            parametro.Add("NM_TIME", "Machester");
+            SortedList parametro = time.ConverterParaModeloSistema();
 
             TimeBLL incluirBLL = new TimeBLL();
             SortedList resultado = incluirBLL.Incluir(parametro);
