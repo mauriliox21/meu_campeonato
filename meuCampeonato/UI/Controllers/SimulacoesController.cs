@@ -8,9 +8,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Services.Description;
-using UI.Models;
+using API.Models;
 
-namespace UI.Controllers
+namespace API.Controllers
 {
     public class SimulacoesController : ApiController
     {

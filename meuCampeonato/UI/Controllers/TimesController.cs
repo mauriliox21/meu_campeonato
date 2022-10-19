@@ -7,9 +7,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using UI.Models;
+using API.Models;
 
-namespace UI.Controllers
+namespace API.Controllers
 {
     public class TimesController : ApiController
     {

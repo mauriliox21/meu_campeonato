@@ -8,6 +8,9 @@ namespace Biblioteca.Util
 {
     public class UtilValidacao
     {
+        /// <summary>
+        /// Verifica se um parâmetro passado é um inteiro valído, também valída se o parâmetro é nulo caso seja obrigatorio
+        /// </summary>
         public static void ValidarParametroInteiro(object parametro, string nomeParametro, ref string mensagem, bool obrigatorio)
         {
             if(parametro == null && obrigatorio)
@@ -21,6 +24,9 @@ namespace Biblioteca.Util
             }
         }
 
+        /// <summary>
+        /// Verifica se um parâmetro passado é uma string com o tamanho maximo passado por parâmetro da função, também valída se o parâmetro é nulo caso seja obrigatorio
+        /// </summary>
         public static void ValidarParametroAlfanumerico(object parametro, string nomeParametro, ref string mensagem, int tamanhoMax, bool obrigatorio)
         {
             string paramString = "";

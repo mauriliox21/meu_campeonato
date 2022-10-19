@@ -7,15 +7,16 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using UI.Models;
+using API.Models;
 
-namespace UI.Controllers
+namespace API.Controllers
 {
     public class CampeonatosController : ApiController
     {
-        public HttpResponseMessage Get([FromBody] CampeonatoModel campeonato)
+        public HttpResponseMessage Get(string nomeCampeonato = "")
         {
-            SortedList parametros = campeonato.ConverterParaModeloSistema();
+            SortedList parametros = new SortedList();
+            parametros["NM_CAMPEONATO"] = nomeCampeonato;
 
             CampeonatoBLL consultarBLL = new CampeonatoBLL();
             SortedList resultado = consultarBLL.Consultar(parametros);
@@ -38,7 +39,7 @@ namespace UI.Controllers
             return resposta;
         }
 
-        public HttpResponseMessage Get([FromUri] string sq)
+        public HttpResponseMessage Get([FromUri] int sq)
         {
             SortedList parametros = new SortedList();
             parametros.Add("SQ_CAMPEONATO", sq);

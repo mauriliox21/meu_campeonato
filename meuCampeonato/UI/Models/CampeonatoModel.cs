@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 
-namespace UI.Models
+namespace API.Models
 {
     public class CampeonatoModel
     {

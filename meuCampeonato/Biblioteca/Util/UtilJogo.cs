@@ -46,6 +46,9 @@ namespace Biblioteca.Util
             return sqTimeEliminado;
         }
 
+        /// <summary>
+        /// Retorna uma sequência de numeros aleatorios que não se repetem
+        /// </summary>
         public static int[] SortearTimes(int qtdTimes, int indiceMax)
         {
             //usa um array de string para comparar pois quando se usa array de int o ultimo valor do array vai ser sempre 0
@@ -69,6 +72,9 @@ namespace Biblioteca.Util
             return timesSorteados;
         }
 
+        /// <summary>
+        /// Retorna uma sequência de dois numeros aleatorios que podem ser repetidos
+        /// </summary>
         public static int[] SortearPlacares(int indiceMax)
         {
             int[] placares = new int[2];
